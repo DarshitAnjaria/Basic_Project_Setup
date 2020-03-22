@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Basic Project Setup</string>
-    <string name="OK">Ok</string>
+
+    <!--setting font names-->
+    <string name="bellota_bold">bellota_bold.ttf</string>
+    <string name="bellota_italic">bellota_italic.ttf</string>
+    <string name="bellota_regular">bellota_regular.ttf</string>
+
+    <string name="OK">OK</string>
 </resources>
