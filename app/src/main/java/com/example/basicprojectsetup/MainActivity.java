@@ -3,7 +3,6 @@ package com.example.basicprojectsetup;
 import android.os.Bundle;
 
 import com.example.basicprojectsetup.Base.BaseActivity;
-import com.example.basicprojectsetup.Utils.Tools;
 
 public class MainActivity extends BaseActivity {
 
