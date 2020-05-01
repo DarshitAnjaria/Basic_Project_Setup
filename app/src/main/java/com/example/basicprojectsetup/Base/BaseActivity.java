@@ -3,12 +3,10 @@ package com.example.basicprojectsetup.Base;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.basicprojectsetup.Callback.CallbackDialogButtonClick;
 import com.example.basicprojectsetup.Callback.CallbackOkCancel;
-import com.example.basicprojectsetup.Callback.CallbackOnToastAction;
 import com.example.basicprojectsetup.R;
 import com.example.basicprojectsetup.Utils.DialogUtil;
 
@@ -122,12 +118,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     //orientation = 0 -> vertical, orientation = 1 -> horizontal
     protected void setRecyclerView(Activity activity, RecyclerView recyclerView, int orientation) {
         RecyclerView.LayoutManager layoutManager;
-        if (orientation == 0) {
-            layoutManager = new LinearLayoutManager(activity.getApplicationContext());
-        } else if (orientation == 1) {
-            layoutManager = new LinearLayoutManager(activity.getApplicationContext(), RecyclerView.HORIZONTAL, false);
-        } else {
-            layoutManager = new LinearLayoutManager(activity.getApplicationContext());
+        switch (orientation) {
+            case 1:
+                layoutManager = new LinearLayoutManager(activity.getApplicationContext(), RecyclerView.HORIZONTAL, false);
+                break;
+            case 0:
+            default:
+                layoutManager = new LinearLayoutManager(activity.getApplicationContext());
+                break;
         }
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
