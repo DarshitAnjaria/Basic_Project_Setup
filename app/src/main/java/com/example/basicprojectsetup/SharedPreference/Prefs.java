@@ -35,12 +35,6 @@ public final class Prefs {
         mPrefs = context.getSharedPreferences(prefsName, mode);
     }
 
-    /**
-     * Returns the underlying SharedPreference instance
-     *
-     * @return an instance of the SharedPreference
-     * @throws RuntimeException if SharedPreference instance has not been instantiated yet.
-     */
     @SuppressWarnings("WeakerAccess")
     public static SharedPreferences getPreferences() {
         if (mPrefs != null) {
@@ -50,182 +44,58 @@ public final class Prefs {
                 "Prefs class not correctly instantiated. Please call Builder.setContext().build() in the Application class onCreate.");
     }
 
-    /**
-     * @return Returns a map containing a list of pairs key/value representing
-     * the preferences.
-     * @see SharedPreferences#getAll()
-     */
     public static Map<String, ?> getAll() {
         return getPreferences().getAll();
     }
 
-    /**
-     * Retrieves a stored int value.
-     *
-     * @param key      The name of the preference to retrieve.
-     * @param defValue Value to return if this preference does not exist.
-     * @return Returns the preference value if it exists, or defValue.
-     * @throws ClassCastException if there is a preference with this name that is not
-     *                            an int.
-     * @see SharedPreferences#getInt(String, int)
-     */
     public static int getInt(final String key, final int defValue) {
         return getPreferences().getInt(key, defValue);
     }
 
-    /**
-     * Retrieves a stored int value, or 0 if the preference does not exist.
-     *
-     * @param key The name of the preference to retrieve.
-     * @return Returns the preference value if it exists, or 0.
-     * @throws ClassCastException if there is a preference with this name that is not
-     *                            an int.
-     * @see SharedPreferences#getInt(String, int)
-     */
     public static int getInt(final String key) {
         return getPreferences().getInt(key, 0);
     }
 
-    /**
-     * Retrieves a stored boolean value.
-     *
-     * @param key      The name of the preference to retrieve.
-     * @param defValue Value to return if this preference does not exist.
-     * @return Returns the preference value if it exists, or defValue.
-     * @throws ClassCastException if there is a preference with this name that is not a boolean.
-     * @see SharedPreferences#getBoolean(String, boolean)
-     */
     public static boolean getBoolean(final String key, final boolean defValue) {
         return getPreferences().getBoolean(key, defValue);
     }
 
-    /**
-     * Retrieves a stored boolean value, or false if the preference does not exist.
-     *
-     * @param key The name of the preference to retrieve.
-     * @return Returns the preference value if it exists, or false.
-     * @throws ClassCastException if there is a preference with this name that is not a boolean.
-     * @see SharedPreferences#getBoolean(String, boolean)
-     */
     public static boolean getBoolean(final String key) {
         return getPreferences().getBoolean(key, false);
     }
 
-    /**
-     * Retrieves a stored long value.
-     *
-     * @param key      The name of the preference to retrieve.
-     * @param defValue Value to return if this preference does not exist.
-     * @return Returns the preference value if it exists, or defValue.
-     * @throws ClassCastException if there is a preference with this name that is not a long.
-     * @see SharedPreferences#getLong(String, long)
-     */
     public static long getLong(final String key, final long defValue) {
         return getPreferences().getLong(key, defValue);
     }
 
-    /**
-     * Retrieves a stored long value, or 0 if the preference does not exist.
-     *
-     * @param key The name of the preference to retrieve.
-     * @return Returns the preference value if it exists, or 0.
-     * @throws ClassCastException if there is a preference with this name that is not a long.
-     * @see SharedPreferences#getLong(String, long)
-     */
     public static long getLong(final String key) {
         return getPreferences().getLong(key, 0L);
     }
 
-    /**
-     * Returns the double that has been saved as a long raw bits value in the long preferences.
-     *
-     * @param key      The name of the preference to retrieve.
-     * @param defValue the double Value to return if this preference does not exist.
-     * @return Returns the preference value if it exists, or defValue.
-     * @throws ClassCastException if there is a preference with this name that is not a long.
-     * @see SharedPreferences#getLong(String, long)
-     */
     public static double getDouble(final String key, final double defValue) {
         return Double.longBitsToDouble(getPreferences().getLong(key, Double.doubleToLongBits(defValue)));
     }
 
-    /**
-     * Returns the double that has been saved as a long raw bits value in the long preferences.
-     * Returns 0 if the preference does not exist.
-     *
-     * @param key The name of the preference to retrieve.
-     * @return Returns the preference value if it exists, or 0.
-     * @throws ClassCastException if there is a preference with this name that is not a long.
-     * @see SharedPreferences#getLong(String, long)
-     */
     public static double getDouble(final String key) {
         return Double.longBitsToDouble(getPreferences().getLong(key, Double.doubleToLongBits(0.0d)));
     }
 
-    /**
-     * Retrieves a stored float value.
-     *
-     * @param key      The name of the preference to retrieve.
-     * @param defValue Value to return if this preference does not exist.
-     * @return Returns the preference value if it exists, or defValue.
-     * @throws ClassCastException if there is a preference with this name that is not a float.
-     * @see SharedPreferences#getFloat(String, float)
-     */
     public static float getFloat(final String key, final float defValue) {
         return getPreferences().getFloat(key, defValue);
     }
 
-    /**
-     * Retrieves a stored float value, or 0 if the preference does not exist.
-     *
-     * @param key The name of the preference to retrieve.
-     * @return Returns the preference value if it exists, or 0.
-     * @throws ClassCastException if there is a preference with this name that is not a float.
-     * @see SharedPreferences#getFloat(String, float)
-     */
     public static float getFloat(final String key) {
         return getPreferences().getFloat(key, 0.0f);
     }
 
-    /**
-     * Retrieves a stored String value.
-     *
-     * @param key      The name of the preference to retrieve.
-     * @param defValue Value to return if this preference does not exist.
-     * @return Returns the preference value if it exists, or defValue.
-     * @throws ClassCastException if there is a preference with this name that is not a String.
-     * @see SharedPreferences#getString(String, String)
-     */
     public static String getString(final String key, final String defValue) {
         return getPreferences().getString(key, defValue);
     }
 
-    /**
-     * Retrieves a stored String value, or an empty string if the preference does not exist.
-     *
-     * @param key The name of the preference to retrieve.
-     * @return Returns the preference value if it exists, or "".
-     * @throws ClassCastException if there is a preference with this name that is not a String.
-     * @see SharedPreferences#getString(String, String)
-     */
     public static String getString(final String key) {
         return getPreferences().getString(key, "");
     }
 
-    /**
-     * Retrieves a Set of Strings as stored by {@link #putStringSet(String, Set)}. On Honeycomb and
-     * later this will call the native implementation in SharedPreferences, on older SDKs this will
-     * call {@link #getOrderedStringSet(String, Set)}.
-     * <strong>Note that the native implementation of {@link SharedPreferences#getStringSet(String,
-     * Set)} does not reliably preserve the order of the Strings in the Set.</strong>
-     *
-     * @param key      The name of the preference to retrieve.
-     * @param defValue Value to return if this preference does not exist.
-     * @return Returns the preference values if they exist, or defValues otherwise.
-     * @throws ClassCastException if there is a preference with this name that is not a Set.
-     * @see SharedPreferences#getStringSet(String, Set)
-     * @see #getOrderedStringSet(String, Set)
-     */
     @SuppressWarnings("WeakerAccess")
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static Set<String> getStringSet(final String key, final Set<String> defValue) {
@@ -238,18 +108,6 @@ public final class Prefs {
         }
     }
 
-    /**
-     * Retrieves a Set of Strings as stored by {@link #putOrderedStringSet(String, Set)},
-     * preserving the original order. Note that this implementation is heavier than the native
-     * {@link #getStringSet(String, Set)} method (which does not guarantee to preserve order).
-     *
-     * @param key      The name of the preference to retrieve.
-     * @param defValue Value to return if this preference does not exist.
-     * @return Returns the preference value if it exists, or defValues otherwise.
-     * @throws ClassCastException if there is a preference with this name that is not a Set of
-     *                            Strings.
-     * @see #getStringSet(String, Set)
-     */
     @SuppressWarnings("WeakerAccess")
     public static Set<String> getOrderedStringSet(String key, final Set<String> defValue) {
         SharedPreferences prefs = getPreferences();
@@ -266,96 +124,42 @@ public final class Prefs {
         return defValue;
     }
 
-    /**
-     * Stores a long value.
-     *
-     * @param key   The name of the preference to modify.
-     * @param value The new value for the preference.
-     * @see Editor#putLong(String, long)
-     */
     public static void putLong(final String key, final long value) {
         final Editor editor = getPreferences().edit();
         editor.putLong(key, value);
         editor.apply();
     }
 
-    /**
-     * Stores an integer value.
-     *
-     * @param key   The name of the preference to modify.
-     * @param value The new value for the preference.
-     * @see Editor#putInt(String, int)
-     */
     public static void putInt(final String key, final int value) {
         final Editor editor = getPreferences().edit();
         editor.putInt(key, value);
         editor.apply();
     }
 
-    /**
-     * Stores a double value as a long raw bits value.
-     *
-     * @param key   The name of the preference to modify.
-     * @param value The double value to be save in the preferences.
-     * @see Editor#putLong(String, long)
-     */
     public static void putDouble(final String key, final double value) {
         final Editor editor = getPreferences().edit();
         editor.putLong(key, Double.doubleToRawLongBits(value));
         editor.apply();
     }
 
-    /**
-     * Stores a float value.
-     *
-     * @param key   The name of the preference to modify.
-     * @param value The new value for the preference.
-     * @see Editor#putFloat(String, float)
-     */
     public static void putFloat(final String key, final float value) {
         final Editor editor = getPreferences().edit();
         editor.putFloat(key, value);
         editor.apply();
     }
 
-    /**
-     * Stores a boolean value.
-     *
-     * @param key   The name of the preference to modify.
-     * @param value The new value for the preference.
-     * @see Editor#putBoolean(String, boolean)
-     */
     public static void putBoolean(final String key, final boolean value) {
         final Editor editor = getPreferences().edit();
         editor.putBoolean(key, value);
         editor.apply();
     }
 
-    /**
-     * Stores a String value.
-     *
-     * @param key   The name of the preference to modify.
-     * @param value The new value for the preference.
-     * @see Editor#putString(String, String)
-     */
     public static void putString(final String key, final String value) {
         final Editor editor = getPreferences().edit();
         editor.putString(key, value);
         editor.apply();
     }
 
-    /**
-     * Stores a Set of Strings. On Honeycomb and later this will call the native implementation in
-     * SharedPreferences.Editor, on older SDKs this will call {@link #putOrderedStringSet(String,
-     * Set)}.
-     * <strong>Note that the native implementation of {@link Editor#putStringSet(String,
-     * Set)} does not reliably preserve the order of the Strings in the Set.</strong>
-     *
-     * @param key   The name of the preference to modify.
-     * @param value The new value for the preference.
-     * @see Editor#putStringSet(String, Set)
-     * @see #putOrderedStringSet(String, Set)
-     */
     @SuppressWarnings("WeakerAccess")
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static void putStringSet(final String key, final Set<String> value) {
@@ -369,18 +173,6 @@ public final class Prefs {
         }
     }
 
-    /**
-     * Stores a Set of Strings, preserving the order.
-     * Note that this method is heavier that the native implementation {@link #putStringSet(String,
-     * Set)} (which does not reliably preserve the order of the Set). To preserve the order of the
-     * items in the Set, the Set implementation must be one that as an iterator with predictable
-     * order, such as {@link LinkedHashSet}.
-     *
-     * @param key   The name of the preference to modify.
-     * @param value The new value for the preference.
-     * @see #putStringSet(String, Set)
-     * @see #getOrderedStringSet(String, Set)
-     */
     @SuppressWarnings("WeakerAccess")
     public static void putOrderedStringSet(String key, Set<String> value) {
         final Editor editor = getPreferences().edit();
@@ -402,12 +194,6 @@ public final class Prefs {
         editor.apply();
     }
 
-    /**
-     * Removes a preference value.
-     *
-     * @param key The name of the preference to remove.
-     * @see Editor#remove(String)
-     */
     public static void remove(final String key) {
         SharedPreferences prefs = getPreferences();
         final Editor editor = prefs.edit();
@@ -433,44 +219,20 @@ public final class Prefs {
         editor.apply();
     }
 
-
-    /**
-     * Checks if a value is stored for the given key.
-     *
-     * @param key The name of the preference to check.
-     * @return {@code true} if the storage contains this key value, {@code false} otherwise.
-     * @see SharedPreferences#contains(String)
-     */
     public static boolean contains(final String key) {
         return getPreferences().contains(key);
     }
 
-    /**
-     * Removed all the stored keys and values.
-     *
-     * @return the {@link Editor} for chaining. The changes have already been committed/applied
-     * through the execution of this method.
-     * @see Editor#clear()
-     */
     public static Editor clear() {
         final Editor editor = getPreferences().edit().clear();
         editor.apply();
         return editor;
     }
 
-    /**
-     * Returns the Editor of the underlying SharedPreferences instance.
-     *
-     * @return An Editor
-     */
     public static Editor edit() {
         return getPreferences().edit();
     }
 
-    /**
-     * Builder class for the EasyPrefs instance. You only have to call this once in the Application
-     * onCreate. And in the rest of the code base you can call Prefs.method name.
-     */
     public final static class Builder {
 
         private String mKey;
