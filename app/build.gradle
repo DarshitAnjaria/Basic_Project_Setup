@@ -52,4 +52,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
     implementation 'com.victor:lib:1.0.1'
     implementation 'com.google.code.gson:gson:2.8.6'
+    
+    /*jetpack security library*/
+    implementation "androidx.security:security-crypto:1.0.0-rc02"
 }
