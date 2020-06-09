@@ -1,4 +1,5 @@
-package com.example.basicprojectsetup.SharedPreference;
+package com.example.encryptedsharedprefexample;
+
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -9,6 +10,11 @@ import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.text.TextUtils;
 
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
+
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +24,7 @@ public final class Prefs {
 
     private static final String DEFAULT_SUFFIX = "_preferences";
     private static final String LENGTH = "#LENGTH";
-    private static SharedPreferences mPrefs;
+    private static SharedPreferences sharedPreferences;
 
     /**
      * Initialize the Prefs helper class to keep a reference to the SharedPreference for this
@@ -32,13 +38,24 @@ public final class Prefs {
     }
 
     private static void initPrefs(Context context, String prefsName, int mode) {
-        mPrefs = context.getSharedPreferences(prefsName, mode);
+        sharedPreferences = context.getSharedPreferences(prefsName, mode);
+    }
+
+    private static void initEncryptedPrefs(Context context, String prefsName, int mode) {
+        try {
+            String masterkeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+            sharedPreferences = EncryptedSharedPreferences.create(prefsName, masterkeyAlias, context,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressWarnings("WeakerAccess")
     public static SharedPreferences getPreferences() {
-        if (mPrefs != null) {
-            return mPrefs;
+        if (sharedPreferences != null) {
+            return sharedPreferences;
         }
         throw new RuntimeException(
                 "Prefs class not correctly instantiated. Please call Builder.setContext().build() in the Application class onCreate.");
@@ -177,9 +194,9 @@ public final class Prefs {
     public static void putOrderedStringSet(String key, Set<String> value) {
         final Editor editor = getPreferences().edit();
         int stringSetLength = 0;
-        if (mPrefs.contains(key + LENGTH)) {
+        if (sharedPreferences.contains(key + LENGTH)) {
             // First read what the value was
-            stringSetLength = mPrefs.getInt(key + LENGTH, -1);
+            stringSetLength = sharedPreferences.getInt(key + LENGTH, -1);
         }
         editor.putInt(key + LENGTH, value.size());
         int i = 0;
@@ -294,6 +311,71 @@ public final class Prefs {
             }
 
             Prefs.initPrefs(mContext, mKey, mMode);
+        }
+
+    }
+
+    public final static class EncryptedPrefBuilder {
+
+        private String mKey;
+        private Context mContext;
+        private int mMode = -1;
+        private boolean mUseDefault = false;
+
+
+        public EncryptedPrefBuilder setPrefsName(final String prefsName) {
+            mKey = prefsName;
+            return this;
+        }
+
+
+        public EncryptedPrefBuilder setContext(final Context context) {
+            mContext = context;
+            return this;
+        }
+
+
+        @SuppressLint({"WorldReadableFiles", "WorldWriteableFiles"})
+        public EncryptedPrefBuilder setMode(final int mode) {
+            if (mode == ContextWrapper.MODE_PRIVATE || mode == ContextWrapper.MODE_WORLD_READABLE || mode == ContextWrapper.MODE_WORLD_WRITEABLE || mode == ContextWrapper.MODE_MULTI_PROCESS) {
+                mMode = mode;
+            } else {
+                throw new RuntimeException("The mode in the SharedPreference can only be set too ContextWrapper.MODE_PRIVATE, ContextWrapper.MODE_WORLD_READABLE, ContextWrapper.MODE_WORLD_WRITEABLE or ContextWrapper.MODE_MULTI_PROCESS");
+            }
+
+            return this;
+        }
+
+
+        @SuppressWarnings("SameParameterValue")
+        public EncryptedPrefBuilder setUseDefaultSharedPreference(boolean defaultSharedPreference) {
+            mUseDefault = defaultSharedPreference;
+            return this;
+        }
+
+        /**
+         * Initialize the SharedPreference instance to used in the application.
+         *
+         * @throws RuntimeException if Context has not been set.
+         */
+        public void build() {
+            if (mContext == null) {
+                throw new RuntimeException("Context not set, please set context before building the Prefs instance.");
+            }
+
+            if (TextUtils.isEmpty(mKey)) {
+                mKey = mContext.getPackageName();
+            }
+
+            if (mUseDefault) {
+                mKey += DEFAULT_SUFFIX;
+            }
+
+            if (mMode == -1) {
+                mMode = ContextWrapper.MODE_PRIVATE;
+            }
+
+            Prefs.initEncryptedPrefs(mContext, mKey, mMode);
         }
 
     }
